@@ -5,9 +5,9 @@
 TEMPLATE = app
 TARGET = CameraPC
 INCLUDEPATH += .
+INCLUDEPATH += /Users/George/camerapc/CameraPC/osx/D2XX
 QT += gui
 QT += widgets
-D:\CameraPC 
 
 
 # The following define makes your compiler warn you if you use any
@@ -23,11 +23,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Input
 SOURCES += \
-	main.cpp\
-	ftdi.cpp
+	main.cpp \
+	ftdi.cpp \
+        gscamera.cpp \
 
 HEADERS += \
-    ftdi.h \
-    ftd2xx.h
+        ftdi.h \
+        ftd2xx.h \
+        gscamera.h \
 
-LIBS += D:\CameraPC\ftd2xx.lib
+LIBS += /Users/George/camerapc/CameraPC/osx/D2XX/libftd2xx.1.4.4.dylib

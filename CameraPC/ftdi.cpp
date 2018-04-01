@@ -14,7 +14,7 @@ int ftdi::connect(char serial[])
     ftStatus = FT_SetBitMode(ftHandle, Mask, 0);
 
     // Delay for the device to restart
-    Sleep(100);
+    usleep(100000);
 
     // Set the mode to 245 sync
     ftStatus = FT_SetBitMode(ftHandle, Mask, MODE_SYNC_245);

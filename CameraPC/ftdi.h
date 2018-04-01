@@ -1,4 +1,5 @@
 #include "ftd2xx.h"
+#include <unistd.h>
 
 #define FTDI_OK 0
 #define FTDI_ERR -1

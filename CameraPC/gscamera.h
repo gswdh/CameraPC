@@ -1,5 +1,7 @@
 #include "ftdi.h"
 #include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
 
 #define CAM_OK 0
 #define CAM_ERR -1
@@ -27,12 +29,14 @@ private:
 	int resetCam();
 
 public:
-	int gscamera(char serial_n[]);
-	int getImage(unsigned int * pData);
+    gscamera();
+    int start(char serial_n[]);
+    int getImage(unsigned char* pData);
 	int setRes(int x, int y);
 	int setGain(int gain);
 	int setIntegration(int time);
 	int setSubsampling(int mode);
 	int getResX();
 	int getResY();
+    ~gscamera();
 };

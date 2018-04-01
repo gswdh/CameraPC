@@ -2,32 +2,27 @@
 #include <QApplication>
 #include <QLabel>
 
-#include "ftdi.h"
+#include "gscamera.h"
 
 int main(int argc, char **argv) 
 {
+    gscamera cam;
 
-	ftdi ft;
+    QString label_name;
+
+    if(cam.start("GSW1G8LTV") == 0)
+        label_name = "Connected";
+    else
+        label_name = "Not connected";
+
+    //unsigned char *image = (unsigned char*)malloc(cam.getResX() * cam.getResY() * 2);
+
+    //cam.getImage(image);
+
 
 	QApplication app(argc, argv);
 
-	char serial_number[] = {"GSW1G8LTV"};
-
-	QString message;
-
-	if(ft.connect(serial_number) == FTDI_OK)
-	{
-		message = "Connected!";
-	}
-
-	else 
-	{
-		message = "Couldn't :(";
-	}
-
-	ft.disconnect();
-
-	QLabel label(message);
+    QLabel label(label_name);
 	label.show();
 
 	return app.exec();
