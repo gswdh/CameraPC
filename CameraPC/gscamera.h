@@ -29,8 +29,7 @@ private:
 	int resetCam();
 
 public:
-    gscamera();
-    int start(char serial_n[]);
+    gscamera(char serial_n[]);
     int getImage(unsigned char* pData);
 	int setRes(int x, int y);
 	int setGain(int gain);
@@ -38,5 +37,6 @@ public:
 	int setSubsampling(int mode);
 	int getResX();
 	int getResY();
+    int getQueue();
     ~gscamera();
 };

@@ -15,9 +15,9 @@ private:
     FT_STATUS ftStatus;
     FT_DEVICE ftDevice;
 
-    DWORD LatencyTimer = 100;
-    UCHAR MODE_SYNC_245 = 0x40;
-    UCHAR Mask = 0xFF;
+    DWORD const LatencyTimer = 100;
+    UCHAR const MODE_SYNC_245 = 0x40;
+    UCHAR const Mask = 0xFF;
 
 public:
     ftdi();
@@ -26,6 +26,6 @@ public:
     int transmit(unsigned char* txBuffer, unsigned long nBytes);
     int purge();
     int receive(unsigned char* rxBuffer, unsigned long nBytes);
-    int getQue(unsigned long * nBytes);
+    int getQueLen(unsigned long * nBytes);
     ~ftdi();
 };

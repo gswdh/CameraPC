@@ -1,12 +1,6 @@
 #include "gscamera.h"
 
-gscamera::gscamera()
-{
-
-}
-
-
-int gscamera::start(char serial_n[])
+gscamera::gscamera(char serial_n[])
 {
 	// Result
 	int ft_result = -1;
@@ -202,4 +196,13 @@ int gscamera::getResX()
 int gscamera::getResY()
 {
 	return _res_y;
+}
+
+int gscamera::getQueue()
+{
+    unsigned long bytes = 0;
+
+    ft.getQueLen(&bytes);
+
+    return bytes;
 }

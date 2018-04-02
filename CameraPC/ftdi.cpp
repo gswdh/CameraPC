@@ -28,8 +28,11 @@ int ftdi::connect(char serial[])
     // Set the flow control
     ftStatus = FT_SetFlowControl(ftHandle, FT_FLOW_RTS_CTS, 0, 0);
 
+    // Start with clear buffers
+    int ft_result = this->purge();
+
     // Return
-    if(ftStatus == FT_OK)
+    if((ftStatus == FT_OK) & (ft_result == FTDI_OK))
         return FTDI_OK;
     else
         return FTDI_ERR;
@@ -152,7 +155,7 @@ int ftdi::receive(unsigned char* rxBuffer, unsigned long nBytes)
     }   
 }
 
-int ftdi::getQue(unsigned long * nBytes)
+int ftdi::getQueLen(unsigned long * nBytes)
 {
     DWORD RxBytes;
 
@@ -171,5 +174,5 @@ int ftdi::getQue(unsigned long * nBytes)
 
 ftdi::~ftdi()
 {
-
+    this->disconnect();
 }
