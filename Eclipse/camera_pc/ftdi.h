@@ -23,7 +23,7 @@ private:
 
 public:
     ftdi();
-    int connect(char serial_n[]);
+    int connect(std::string serial);
     int disconnect();
     int transmit(unsigned char* txBuffer, unsigned long nBytes);
     int purge();

@@ -30,7 +30,7 @@ private:
 
 public:
     gscamera();
-    int connect(char serial_n[]);
+    int connect(std::string serial_n);
     int getImage(unsigned char* pData);
 	int setRes(int x, int y);
 	int setGain(int gain);

@@ -5,7 +5,7 @@ gscamera::gscamera()
 
 }
 
-int gscamera::connect(char serial_n[])
+int gscamera::connect(std::string serial_n)
 {
 	// Result
 	int ft_result = -1;

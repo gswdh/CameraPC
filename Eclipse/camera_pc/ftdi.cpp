@@ -7,10 +7,20 @@ ftdi::ftdi()
     Mask = 0xFF;
 }
 
-int ftdi::connect(char serial[])
+int ftdi::connect(std::string serial)
 {
+
+	// Convert the String to char
+	int n = serial.length();
+
+	// declaring character array
+	char char_array[n+1];
+
+	// Copying the contents of the string to char array
+	strcpy(char_array, serial.c_str());
+
     // Open the FTDI device with the spcified serial number
-    ftStatus = FT_OpenEx(serial, FT_OPEN_BY_SERIAL_NUMBER, &ftHandle);
+    ftStatus = FT_OpenEx(char_array, FT_OPEN_BY_SERIAL_NUMBER, &ftHandle);
 
     // Reset the FTDI device
     ftStatus = FT_SetBitMode(ftHandle, Mask, 0);
