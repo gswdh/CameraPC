@@ -53,19 +53,20 @@ int ftdi::connect(std::string serial)
 
 int ftdi::disconnect()
 {
-    if(ftHandle == NULL)
-        return FTDI_ERR;
+	// Nothing was connected in the first place
+    if(ftHandle == NULL)return FTDI_ERR;
 
-    else 
-        FT_Close(&ftHandle);
+    // Close
+    else FT_Close(&ftHandle);
 
+    // All done okay
     return FTDI_OK;
 }
 
-int ftdi::transmit(unsigned char* txBuffer, unsigned long nBytes)
+int ftdi::transmit(unsigned char* txBuffer, long long nBytes)
 {
     // Check how many bytes are written
-    DWORD nBytesWritten = 0;
+    DWORD nBytesWritten = 0, txBytes = 0;
 
     // If the device hasn't been connected to yet
     if(ftHandle == NULL)
@@ -77,31 +78,18 @@ int ftdi::transmit(unsigned char* txBuffer, unsigned long nBytes)
         // Go through all the data
         while(nBytes > 0)
         {
-            // Larger than the max buffer size...
-            if(nBytes > 65536)
-            {
-                // Write as much data as possible
-                ftStatus = FT_Write(ftHandle, txBuffer, (DWORD)65536, &nBytesWritten);
+        	// Create the packet size
+        	if(nBytes > 65535)txBytes = 65535;
+        	else txBytes = nBytes;
 
-                // Increment the pointer by the number of bytes successfully written
-                txBuffer += nBytesWritten;
+			// Write as much data as possible
+			ftStatus = FT_Write(ftHandle, txBuffer, txBytes, &nBytesWritten);
 
-                // Decrement the bytes counter
-                nBytes -= nBytesWritten;
-            }
+			// Increment the pointer by the number of bytes successfully written
+			txBuffer += nBytesWritten;
 
-            // Fits in one transfer
-            else
-            {
-                // Send the data
-                ftStatus = FT_Write(ftHandle, txBuffer, (DWORD)nBytes, &nBytesWritten);
-
-                // Check if successful
-                if(nBytesWritten == nBytes)
-                    return FTDI_OK;
-                else 
-                    return FTDI_ERR;
-            }
+			// Decrement the bytes counter
+			nBytes -= nBytesWritten;
         }   
         return FTDI_OK;
     }
@@ -119,7 +107,7 @@ int ftdi::purge()
         return FTDI_ERR;
 }
 
-int ftdi::receive(unsigned char* rxBuffer, unsigned long nBytes)
+int ftdi::receive(unsigned char* rxBuffer, long long nBytes)
 {
 	// Check how many bytes are written
     DWORD nBytesRead = 0, rxBytes = 0;

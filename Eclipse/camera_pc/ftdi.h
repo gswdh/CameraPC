@@ -26,9 +26,9 @@ public:
     ftdi();
     int connect(std::string serial);
     int disconnect();
-    int transmit(unsigned char* txBuffer, unsigned long nBytes);
+    int transmit(unsigned char* txBuffer, long long nBytes);
     int purge();
-    int receive(unsigned char* rxBuffer, unsigned long nBytes);
+    int receive(unsigned char* rxBuffer, long long nBytes);
     int getQueLen(unsigned long * nBytes);
     ~ftdi();
 };
