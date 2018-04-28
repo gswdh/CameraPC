@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <chrono>
 #include <thread>
+#include <iostream>
 
 #define FTDI_OK 0
 #define FTDI_ERR -1

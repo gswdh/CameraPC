@@ -121,8 +121,8 @@ int ftdi::purge()
 
 int ftdi::receive(unsigned char* rxBuffer, unsigned long nBytes)
 {
-    // Check how many bytes are written
-    DWORD nBytesRead = 0;
+	// Check how many bytes are written
+    DWORD nBytesRead = 0, rxBytes = 0;
 
     // If the device hasn't been connected to yet
     if(ftHandle == NULL)
@@ -134,36 +134,23 @@ int ftdi::receive(unsigned char* rxBuffer, unsigned long nBytes)
         // Go through all the data
         while(nBytes > 0)
         {
-            // Larger than the max buffer size...
-            if(nBytes > 65536)
-            {
-                // Write as much data as possible
-                ftStatus = FT_Read(ftHandle, rxBuffer, (DWORD)65536, &nBytesRead);
+        	// Get the number of bytes available
+			FT_GetQueueStatus(ftHandle, &rxBytes);
 
-                // Return
-                if(ftStatus != FT_OK)
-                    return FTDI_ERR;
+			// Write as much data as possible
+			ftStatus = FT_Read(ftHandle, rxBuffer, rxBytes, &nBytesRead);
 
-                // Increment the pointer by the number of bytes successfully written
-                rxBuffer += nBytesRead;
+			// Return
+			if(ftStatus != FT_OK)
+				return FTDI_ERR;
 
-                // Decrement the bytes counter
-                nBytes -= nBytesRead;
-            }
+			// Increment the pointer by the number of bytes successfully written
+			rxBuffer += nBytesRead;
 
-            // Fits in one transfer
-            else
-            {
-                // Send the data
-                ftStatus = FT_Write(ftHandle, rxBuffer, (DWORD)nBytes, &nBytesRead);
-
-                // Check if successful
-                if(nBytesRead == nBytes)
-                    return FTDI_OK;
-                else 
-                    return FTDI_ERR;
-            }
+			// Decrement the bytes counter
+			nBytes -= nBytesRead;
         }   
+
         return FTDI_OK;
     }   
 }

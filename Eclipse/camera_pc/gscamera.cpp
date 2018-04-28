@@ -23,7 +23,7 @@ int gscamera::connect(std::string serial_n)
 
 	// Set up the camera... TODO: document and finish
 	// Sequencer
-	//this.setReg(0, 272);
+	this->setReg(0, 272);
 
 	// Y resolution (must be half required)
     this->setReg(1, ((_res_y / 2) - 1));
@@ -66,7 +66,7 @@ int gscamera::connect(std::string serial_n)
 
 gscamera::~gscamera()
 {
-	ft.disconnect();
+ 	ft.disconnect();
 }
 
 int gscamera::getImage(unsigned char* pData)
@@ -74,11 +74,7 @@ int gscamera::getImage(unsigned char* pData)
 	int ft_result = -1;
 
 	// Make sure we have enough space
-	image_data = (unsigned char*)realloc(image_data, (_res_x * _res_y) * sizeof(unsigned char));
-
-	// Successful?
-	if(image_data == NULL)
-		return CAM_ERR;
+	pData = (unsigned char*)realloc(pData, (_res_x * _res_y) * sizeof(unsigned char));
 
 	// Start a new image grab
     ft_result = this->triggerCam();
@@ -87,10 +83,7 @@ int gscamera::getImage(unsigned char* pData)
 	int pix_const = 0;
 
 	// Now get the data
-	ft_result = ft.receive(image_data, (_res_x * _res_y) + pix_const);
-
-	// Copy the data over
-	memcpy(pData, image_data, sizeof(image_data));
+	ft_result = ft.receive(pData, (_res_x * _res_y) + pix_const);
 
 	// Result
 	return ft_result;

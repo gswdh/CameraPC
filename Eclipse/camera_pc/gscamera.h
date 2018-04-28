@@ -25,11 +25,12 @@ private:
 
 	// Change the camera settings
 	int setReg(int reg, int value);
-	int triggerCam();
+
 	int resetCam();
 
 public:
     gscamera();
+    int triggerCam();
     int connect(std::string serial_n);
     int getImage(unsigned char* pData);
 	int setRes(int x, int y);
