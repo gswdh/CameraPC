@@ -33,31 +33,14 @@ int main()
 
 		cam.getImage(image_data);
 
-		for(uint32_t i = 0; i < (cam.getResY() * cam.getResX()); i++)
-		{
-			// Make the average
-			average = average + image_data[i];
-
-			// Get the minimum
-			if(image_data[i] < min_exp) min_exp = image_data[i];
-
-			// Get the maximum
-			if(image_data[i] > max_exp) max_exp = image_data[i];
-		}
-
-		cout << "Exposure level = " << average / (cam.getResY() * cam.getResX()) << endl;
-		cout << "Max level = " << max_exp << endl;
-		cout << "Min level = " << min_exp << endl;
-
-		average = 0;
-		max_exp = 0;
-		min_exp = 255;
 
 
+		/*
 		uint8_t bytes = sprintf(buffer, "P5 %d %d 255 \n", cam.getResY(), cam.getResX());
 		pFile = fopen("image.pgm", "wb");
 		fwrite(buffer, 1, bytes*sizeof(uint8_t), pFile);
 		fwrite(image_data, 1, cam.getResX()*cam.getResY()*sizeof(uint8_t), pFile);
 		fclose(pFile);
+		*/
 	}
 }
