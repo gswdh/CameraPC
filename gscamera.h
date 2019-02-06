@@ -4,6 +4,9 @@
 #include <unistd.h>
 #include <string.h>
 
+#include <time.h>
+#include <windows.h>
+
 #define CAM_OK 0
 #define CAM_ERR -1
 
@@ -43,5 +46,7 @@ public:
 	uint16_t getResX();
 	uint16_t getResY();
 	uint32_t getQueue();
+	int8_t resetPixels();
+	int8_t releasePixels();
     ~gscamera();
 };

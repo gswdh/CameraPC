@@ -1,9 +1,29 @@
 #include "gscamera.h"
 
+uint8_t img_cntr = 0;
+
+uint32_t gsGetTime()
+{
+	SYSTEMTIME time;
+	GetSystemTime(&time);
+	return (uint32_t)((time.wSecond * 1000) + time.wMilliseconds);
+}
+
+void gsDelay(uint32_t delay)
+{
+	// Get the start time
+	uint32_t t_start = gsGetTime();
+
+	// Wait until the time has past
+	while((t_start + delay) > gsGetTime());
+}
+
 gscamera::gscamera()
 {
 
 }
+
+
 
 int8_t gscamera::connect(std::string serial_n)
 {
@@ -23,7 +43,7 @@ int8_t gscamera::connect(std::string serial_n)
 
 	// Set up the camera... TODO: document and finish
 	// Sequencer
-	this->setReg(0, 272);
+    this->setReg(0, 256);
 
 	// Y resolution (must be half required)
     this->setReg(1, ((_res_y / 2) - 1));
@@ -73,6 +93,12 @@ int8_t gscamera::getImage(uint8_t * pData)
 {
 	int8_t ft_result = -1;
 
+	if(img_cntr == 0)
+	{
+		img_cntr = 1;
+		this->getImage(pData);
+	}
+
 	// Start a new image grab
     ft_result = this->triggerCam();
 
@@ -81,6 +107,8 @@ int8_t gscamera::getImage(uint8_t * pData)
 
 	// Now get the data
 	ft_result = ft.receive(pData, (_res_x * _res_y) + pix_const);
+
+	img_cntr = 0;
 
 	// Result
 	return ft_result;
@@ -198,3 +226,18 @@ uint32_t gscamera::getQueue()
 
     return bytes;
 }
+
+
+int8_t gscamera::resetPixels()
+{
+	// Reset the reg
+	return this->setReg(0, 2304);
+}
+
+int8_t gscamera::releasePixels()
+{
+	// Reset the reg
+	return this->setReg(0, 256);
+}
+
+
